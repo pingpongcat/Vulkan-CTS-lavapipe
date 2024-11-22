@@ -9,7 +9,6 @@ ENV XDG_RUNTIME_DIR=/tmp/runtime-dir
 ENV DISPLAY=:99
 ENV VK_INSTANCE_LAYERS=VK_LAYER_KHRONOS_validation
 ENV VK_LAYER_SETTINGS_PATH=/etc/vulkan
-ENV VK_LAYER_PATH=/usr/lib/x86_64-linux-gnu/vulkan/layers
 
 # Install minimal dependencies needed for Vulkan CTS
 RUN apt-get update && apt-get install -y \
@@ -30,6 +29,7 @@ RUN apt-get update && apt-get install -y \
     vulkan-validationlayers-dev \
     mesa-vulkan-drivers \
     mesa-common-dev \
+    parallel \
     && rm -rf /var/lib/apt/lists/*
 
 # Create vulkan configuration directory

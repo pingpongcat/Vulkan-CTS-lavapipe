@@ -50,9 +50,9 @@ Once inside the container, you can run tests using various options:
 /build/run-tests.sh --single-test "dEQP-VK.api.info.device"
 ```
 
-4. Run tests with multiple parallel jobs:
+3. Run in parallel:
 ```bash
-/build/run-tests.sh --modules "api" --jobs 4
+/build/run-tests.sh --modules "api" --parallel 8
 ```
 
 Test results will be stored in the `results` directory with filenames like `lava_api.txt`.
