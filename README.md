@@ -1,12 +1,13 @@
 # Vulkan-CTS-lavapipe
 
-Docker environment for running Vulkan Conformance Test Suite (CTS) with LavaPipe software renderer.
+Docker environment for running Vulkan Conformance Test Suite (CTS) with LavaPipe software renderer, including Jenkins automation for parallel testing and validation error reporting.
 
 ## Prerequisites
 
 - Docker installed on your system
 - Git
 - ~10GB of free disk space
+- For automation: Jenkins server with Docker support and Allure plugin
 
 ## Quick Start
 
@@ -50,12 +51,64 @@ Once inside the container, you can run tests using various options:
 /build/run-tests.sh --single-test "dEQP-VK.api.info.device"
 ```
 
-4. Run tests with multiple parallel jobs:
+4. Run in parallel:
 ```bash
-/build/run-tests.sh --modules "api" --jobs 4
+/build/run-tests.sh --modules "api" --parallel 8
 ```
 
-Test results will be stored in the `results` directory with filenames like `lava_api.txt`.
+Test results will be stored in the `results` directory with filenames like `api_0.txt`.
+
+## Jenkins Automation
+
+This repository includes a complete Jenkins pipeline setup for automating:
+- Building the Docker image
+- Running all test modules in parallel
+- Collecting and parsing validation errors
+- Generating reports using the Allure plugin
+- Filtering whitelisted validation errors
+
+### Jenkins Setup Requirements
+
+- Jenkins server with Docker support
+- Jenkins plugins:
+  - [Pipeline](https://plugins.jenkins.io/workflow-aggregator/)
+  - [Docker](https://plugins.jenkins.io/docker-workflow/)
+  - [Allure](https://plugins.jenkins.io/allure-jenkins-plugin/)
+
+### Configuring the Pipeline
+
+1. Create a new Jenkins Pipeline job
+2. Set the pipeline to use SCM and point to this repository
+3. Configure the pipeline to use the Jenkinsfile in the repository root
+
+### Validation Error Whitelist
+
+The `vk-vvl-whitelist.json` file defines patterns for test cases and validation errors that should be ignored in reports. The format is:
+
+```json
+{
+  "path": "dEQP-VK.dynamic_rendering.*.unused_attachments.*",
+  "message": "Undefined-Value-ShaderInputNotProduced-DynamicRendering",
+  "description": "Warning about attachments not being written in FS, however, this behavior is intentional."
+}
+```
+
+### Report Generation
+
+The scripts in the `scripts/` directory process test results and generate Allure-compatible reports:
+
+```bash
+# Parse test results
+python3 scripts/parse_test_results.py \
+  --results-dir results \
+  --whitelist vk-vvl-whitelist.json \
+  --output-json allure-results/validation-results.json
+
+# Generate Allure reports
+python3 scripts/generate_allure_reports.py \
+  --input-json allure-results/validation-results.json \
+  --output-dir allure-results
+```
 
 ## Available Test Modules
 
@@ -117,6 +170,7 @@ Test results will be stored in the `results` directory with filenames like `lava
 - The environment uses LavaPipe software renderer
 - Test results are stored in the mounted results directory
 - Each test run creates a new log file, overwriting any previous results for the same module
+- The validation error whitelist can be customized to ignore expected validation issues
 
 ## Cleaning Up
 
