@@ -1,0 +1,2 @@
+khronos_validation.report_flags = warn,error
+khronos_validation.enables = VK_VALIDATION_FEATURE_ENABLE_SYNCHRONIZATION_VALIDATION
