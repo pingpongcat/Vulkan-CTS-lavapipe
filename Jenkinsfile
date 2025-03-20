@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     parameters {
-        string(name: 'TEST_GROUP', defaultValue: 'dEQP-VK.info.*', description: 'Vulkan CTS test group to run')
+        string(name: 'TEST_GROUP', defaultValue: 'dEQP-VK.*', description: 'Vulkan CTS test group to run')
         booleanParam(name: 'GENERATE_REPORT', defaultValue: true, description: 'Generate test report after running')
     }
     
@@ -17,6 +17,7 @@ pipeline {
             steps {
                 sh '''
                 apt-get update && apt-get install -y git
+                rm -rf ci || true
                 git clone https://github.com/pingpongcat/Vulkan-CTS-lavapipe.git ci
                 '''
                 stash includes: 'ci/**', name: 'ci-repo'
