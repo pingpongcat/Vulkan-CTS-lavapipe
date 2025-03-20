@@ -43,6 +43,7 @@ pipeline {
             steps {
                 sh '''
                 cd /build
+                rm -rf VK-GL-CTS || true
                 git clone https://github.com/pingpongcat/VK-GL-CTS.git
                 cd VK-GL-CTS
                 python3 external/fetch_sources.py
