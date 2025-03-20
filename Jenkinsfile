@@ -17,6 +17,7 @@ pipeline {
             steps {
                 sh '''
                 apt-get update && apt-get install -y git
+                rm -rf ci || true
                 git clone https://github.com/pingpongcat/Vulkan-CTS-lavapipe.git ci
                 '''
                 stash includes: 'ci/**', name: 'ci-repo'
@@ -42,6 +43,7 @@ pipeline {
             steps {
                 sh '''
                 cd /build
+                rm -rf VK-GL-CTS || true
                 git clone https://github.com/pingpongcat/VK-GL-CTS.git
                 cd VK-GL-CTS
                 python3 external/fetch_sources.py
