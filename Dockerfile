@@ -39,6 +39,7 @@ RUN mkdir -p /etc/vulkan
 COPY vk_layer_settings.txt /etc/vulkan/
 
 # Set working directory
+RUN mkdir -p /build && chmod 777 /build
 WORKDIR /build
 
 # Create results directory
