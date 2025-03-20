@@ -11,7 +11,7 @@ pipeline {
             agent {
                 docker { 
                     image 'ubuntu:22.04'
-                    args '-v /var/run/docker.sock:/var/run/docker.sock'
+                    args '-v /var/run/docker.sock:/var/run/docker.sock -u root'
                 }
             }
             steps {
