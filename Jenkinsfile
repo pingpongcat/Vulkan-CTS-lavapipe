@@ -1,75 +1,94 @@
 pipeline {
     agent any
     
-    options {
-        disableConcurrentBuilds()
-        buildDiscarder(logRotator(numToKeepStr: '10'))
-        timeout(time: 3, unit: 'HOURS')
-    }
-    
-    environment {
-        DOCKER_IMAGE = 'vulkan-cts-lavapipe'
-        DOCKER_TAG = "${env.BUILD_NUMBER}"
+    parameters {
+        string(name: 'TEST_GROUP', defaultValue: 'dEQP-VK.info.*', description: 'Vulkan CTS test group to run')
+        booleanParam(name: 'GENERATE_REPORT', defaultValue: true, description: 'Generate test report after running')
     }
     
     stages {
-        stage('Build Docker Image') {
-            steps {
-                sh 'docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .'
-            }
-        }
-        
-        stage('Run Tests in Parallel') {
-            steps {
-                script {
-                    def modules = ['api', 'binding_model', 'clipping', 'compute', 'conditional_descriptor_indexing',
-                                 'conditional_rendering', 'depth', 'device_group', 'dgc', 'draw', 'drm_format_modifiers',
-                                 'dynamic_rendering', 'dynamic_state', 'fragment_operations', 'fragment_shader_interlock',
-                                 'fragment_shading_barycentric', 'fragment_shading_rate', 'geometry', 'glsl', 'graphicsfuzz',
-                                 'image', 'imageless_framebuffer', 'info', 'memory', 'memory_model', 'mesh_shader', 'multiview',
-                                 'pipeline', 'protected_memory', 'query_pool', 'rasterization', 'ray_query', 'ray_tracing_pipeline',
-                                 'reconvergence', 'renderpass', 'renderpass2', 'robustness', 'shader_object', 'sparse_resources',
-                                 'spirv_assembly', 'ssbo', 'subgroups', 'synchronization', 'synchronization2', 'tessellation',
-                                 'texture', 'transform_feedback', 'ubo', 'video', 'wsi', 'ycbcr']
-                    
-                    // Create a directory to store test results
-                    sh 'mkdir -p test-results'
-                    
-                    // Run each module test in parallel
-                    def parallelSteps = modules.collectEntries { module ->
-                        ["${module}" : {
-                            sh """
-                            docker run --rm \
-                                -v \${WORKSPACE}/test-results:/build/results \
-                                \${DOCKER_IMAGE}:\${DOCKER_TAG} \
-                                /build/run-tests.sh -m ${module}
-                            """
-                        }]
-                    }
-                    
-                    parallel parallelSteps
+        stage('Checkout CI') {
+            agent {
+                docker { 
+                    image 'ubuntu:22.04'
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
                 }
             }
-        }
-        
-        stage('Process Results') {
             steps {
-                sh 'python3 scripts/parse_test_results.py --results-dir test-results --whitelist vk-vvl-whitelist.json --output-json allure-results/validation-results.json'
-                sh 'python3 scripts/generate_allure_reports.py --input-json allure-results/validation-results.json --output-dir allure-results'
+                sh '''
+                apt-get update && apt-get install -y git
+                git clone https://github.com/pingpongcat/Vulkan-CTS-lavapipe.git ci
+                '''
+                stash includes: 'ci/**', name: 'ci-repo'
             }
         }
         
-        stage('Publish Reports') {
+        stage('Build Docker Image') {
             steps {
-                allure([
-                    includeProperties: false,
-                    jdk: '',
-                    properties: [],
-                    reportBuildPolicy: 'ALWAYS',
-                    results: [[path: 'allure-results']]
-                ])
+                unstash 'ci-repo'
+                sh '''
+                cd ci
+                docker build -t vulkan-cts-runner .
+                '''
             }
         }
+        
+        stage('Checkout Vulkan CTS') {
+            agent {
+                docker { 
+                    image 'vulkan-cts-runner'
+                }
+            }
+            steps {
+                sh '''
+                cd /build
+                git clone https://github.com/pingpongcat/VK-GL-CTS.git
+                cd VK-GL-CTS
+                python3 external/fetch_sources.py
+                mkdir -p build
+                cd build
+                cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DDEQP_TARGET=default ..
+                ninja -j$(nproc) deqp-vk
+                '''
+            }
+        }
+        
+        stage('Run Tests') {
+            agent {
+                docker { 
+                    image 'vulkan-cts-runner'
+                }
+            }
+            steps {
+                sh '''
+                cd /build/VK-GL-CTS/build/external/vulkancts/modules/vulkan
+                mkdir -p /build/results
+                ./deqp-vk -n ${TEST_GROUP} --deqp-log-images=disable --deqp-log-shader-sources=disable > /build/results/test_output.txt 2>&1
+                '''
+                sh 'cat /build/results/test_output.txt'
+                stash includes: '/build/results/**', name: 'test-results'
+            }
+        }
+        
+        // stage('Parse Results') {
+        //     when {
+        //         expression { return params.GENERATE_REPORT }
+        //     }
+        //     agent {
+        //         docker { 
+        //             image 'vulkan-cts-runner'
+        //         }
+        //     }
+        //     steps {
+        //         unstash 'ci-repo'
+        //         unstash 'test-results'
+        //         sh '''
+        //         cd /build
+        //         python3 ci/scripts/parse_test_results.py --results-dir=/build/results --whitelist=ci/vk-vvl-whitelist.json --output-json=/build/results/parsed_results.json
+        //         '''
+        //         archiveArtifacts artifacts: '/build/results/**', fingerprint: true
+        //     }
+        // }
     }
     
     post {
