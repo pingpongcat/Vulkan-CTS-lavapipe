@@ -41,23 +41,5 @@ COPY vk_layer_settings.txt /etc/vulkan/
 # Set working directory
 WORKDIR /build
 
-# Clone and build Vulkan CTS
-RUN git clone https://github.com/KhronosGroup/VK-GL-CTS.git && \
-    cd VK-GL-CTS && \
-    python3 external/fetch_sources.py && \
-    mkdir build && \
-    cd build && \
-    cmake -DCMAKE_BUILD_TYPE=Release \
-          -DDEQP_TARGET=default \
-          .. && \
-    make -j$(nproc) deqp-vk
-
 # Create results directory
 RUN mkdir -p /build/results
-
-# Create test runner script
-COPY run-tests.sh /build/run-tests.sh
-RUN chmod +x /build/run-tests.sh
-
-# Use a shell as entrypoint
-ENTRYPOINT ["/bin/bash"]
