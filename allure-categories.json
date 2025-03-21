@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Validation Errors",
+    "matchedStatuses": ["failed"],
+    "messageRegex": ".*validation.*error.*"
+  },
+  {
+    "name": "Other Test Failures",
+    "matchedStatuses": ["failed"],
+    "messageRegex": ".*"
+  }
+]

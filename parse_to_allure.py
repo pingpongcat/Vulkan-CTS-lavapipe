@@ -2,11 +2,11 @@ import re
 import json
 import sys
 from collections import defaultdict
-from datetime import datetime
 
 def parse_vulkan_log(log_file_path):
     """
     Parse a Vulkan CTS log file and generate Allure-compatible JSON output.
+    Only reports tests with validation errors.
     """
     with open(log_file_path, 'r', encoding='utf-8') as f:
         content = f.read()
@@ -24,7 +24,7 @@ def parse_vulkan_log(log_file_path):
     error_counts = defaultdict(int)
     total_errors = 0
     
-    # Process each test case
+    # Process each test case - only keep those with errors
     test_results = []
     for test_name, test_output in test_matches:
         errors = re.findall(error_pattern, test_output)
@@ -57,19 +57,8 @@ def parse_vulkan_log(log_file_path):
             test_results.append({
                 "name": test_name,
                 "status": "passed" if "Pass" in test_output else "failed",
-                "has_errors": True,
                 "error_count": len(errors),
                 "errors": error_details
-            })
-        else:
-            # Test without errors
-            test_results.append({
-                "name": test_name,
-                "status": "passed" if "Pass" in test_output else (
-                    "skipped" if "NotSupported" in test_output else "failed"),
-                "has_errors": False,
-                "error_count": 0,
-                "errors": []
             })
     
     # Extract summary statistics
@@ -87,7 +76,6 @@ def parse_vulkan_log(log_file_path):
     
     # Create the final JSON structure
     result = {
-        "timestamp": datetime.now().isoformat(),
         "summary": summary,
         "statistics": {
             "total_tests": total_tests,
@@ -103,7 +91,8 @@ def parse_vulkan_log(log_file_path):
 
 def generate_allure_json(parsed_data, output_dir):
     """
-    Generate Allure-compatible JSON files from the parsed data
+    Generate minimal Allure-compatible JSON files from the parsed data.
+    Only includes tests with validation errors.
     """
     import os
     import uuid
@@ -112,77 +101,35 @@ def generate_allure_json(parsed_data, output_dir):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     
-    # Write each test as a separate Allure result file
+    # Write each test with errors as a separate Allure result file
     for test in parsed_data["tests"]:
         # Generate a unique UUID for the test result file
         test_uuid = str(uuid.uuid4())
         
+        # Create a minimal Allure test structure
         allure_test = {
             "uuid": test_uuid,
             "name": test["name"],
-            "status": test["status"],
-            "stage": "finished",
-            "steps": [],
-            "attachments": [],
-            "parameters": [],
-            "start": 1000000,
-            "stop": 1000001,
-            "labels": [
-                {
-                    "name": "suite",
-                    "value": "VulkanCTS"
-                },
-                {
-                    "name": "framework",
-                    "value": "Vulkan CTS"
-                },
-                {
-                    "name": "testClass",
-                    "value": test["name"].split('.')[0] if '.' in test["name"] else "VulkanCTS"
-                }
-            ]
+            "status": test["status"]
         }
         
-        # Add failure details if the test has errors
-        if test["has_errors"]:
-            error_messages = []
-            for error in test["errors"]:
-                error_messages.append(f"{error['error_id']} (occurred {error['count']} times): {error['message']}")
-                
-                # Add steps for each error
-                allure_test["steps"].append({
-                    "name": f"Validation Error: {error['error_id']}",
-                    "status": "failed",
-                    "stage": "finished",
-                    "steps": [],
-                    "attachments": [],
-                    "parameters": [
-                        {
-                            "name": "count",
-                            "value": str(error["count"])
-                        },
-                        {
-                            "name": "message",
-                            "value": error["message"]
-                        }
-                    ]
-                })
-            
-            # Add statusDetails for failed tests
-            allure_test["statusDetails"] = {
-                "known": False,
-                "muted": False,
-                "flaky": False,
-                "message": f"Test contains {test['error_count']} validation errors",
-                "trace": "\n".join(error_messages)
-            }
+        # Add error details
+        error_messages = []
+        for error in test["errors"]:
+            error_messages.append(f"{error['error_id']} (occurred {error['count']} times): {error['message']}")
+        
+        # Add minimal statusDetails
+        allure_test["statusDetails"] = {
+            "message": f"Test contains {test['error_count']} validation errors",
+            "trace": "\n".join(error_messages)
+        }
         
         # Write the test result to a JSON file
         result_file = os.path.join(output_dir, f"{test_uuid}-result.json")
         with open(result_file, 'w', encoding='utf-8') as f:
             json.dump(allure_test, f, indent=2)
     
-    # Also write a summary file with statistics
+    # Write a summary file with statistics
     summary_file = os.path.join(output_dir, "summary.json")
     with open(summary_file, 'w', encoding='utf-8') as f:
         summary_data = {
@@ -210,6 +157,12 @@ def main():
     print(f"Tests with errors: {parsed_data['statistics']['tests_with_errors']}")
     print(f"Total errors: {parsed_data['statistics']['total_errors']}")
     print(f"Error types: {parsed_data['statistics']['error_types']}")
+    
+    if parsed_data['statistics']['tests_with_errors'] > 0:
+        print("\nError type summary:")
+        for error in sorted(parsed_data["error_counts"], key=lambda x: x["count"], reverse=True):
+            print(f"  {error['id']}: {error['count']} occurrences")
+    
     print(f"\nTo generate the Allure report, run:")
     print(f"  allure generate {output_dir} -o allure-report")
     print(f"  allure open allure-report")

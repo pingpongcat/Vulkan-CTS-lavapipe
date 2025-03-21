@@ -1,4 +1,4 @@
-pipeline {
+}pipeline {
     agent any
     
     parameters {
@@ -44,9 +44,8 @@ pipeline {
             steps {
                 sh '''
                 cd /build
-                # DEBUG
-                # rm -rf VK-GL-CTS || true
-                # git clone https://github.com/pingpongcat/VK-GL-CTS.git
+                rm -rf VK-GL-CTS || true
+                git clone https://github.com/pingpongcat/VK-GL-CTS.git
                 cd VK-GL-CTS
                 python3 external/fetch_sources.py
                 mkdir -p build
@@ -61,6 +60,7 @@ pipeline {
             agent {
                 docker { 
                     image 'vulkan-cts-runner'
+                    args '-v vulkan-cts-build:/build -u root'
                 }
             }
             steps {
@@ -74,25 +74,25 @@ pipeline {
             }
         }
         
-        // stage('Parse Results') {
-        //     when {
-        //         expression { return params.GENERATE_REPORT }
-        //     }
-        //     agent {
-        //         docker { 
-        //             image 'vulkan-cts-runner'
-        //         }
-        //     }
-        //     steps {
-        //         unstash 'ci-repo'
-        //         unstash 'test-results'
-        //         sh '''
-        //         cd /build
-        //         python3 ci/scripts/parse_test_results.py --results-dir=/build/results --whitelist=ci/vk-vvl-whitelist.json --output-json=/build/results/parsed_results.json
-        //         '''
-        //         archiveArtifacts artifacts: '/build/results/**', fingerprint: true
-        //     }
-        // }
+        stage('Parse Results') {
+            when {
+                expression { return params.GENERATE_REPORT }
+            }
+            agent {
+                docker { 
+                    image 'vulkan-cts-runner'
+                }
+            }
+            steps {
+                unstash 'ci-repo'
+                unstash 'test-results'
+                sh '''
+                cd /build
+                python3 ci/parse_to_allure.py /build/results/test_output.txt /build/results/allure-results
+                '''
+                archiveArtifacts artifacts: '/build/results/**', fingerprint: true
+            }
+        }
     }
     
     post {
