@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     parameters {
-        string(name: 'TEST_GROUP', defaultValue: 'dEQP-VK.*', description: 'Vulkan CTS test group to run')
+        string(name: 'TEST_GROUP', defaultValue: 'dEQP-VK.info.*', description: 'Vulkan CTS test group to run')
         booleanParam(name: 'GENERATE_REPORT', defaultValue: true, description: 'Generate test report after running')
     }
     
@@ -38,13 +38,15 @@ pipeline {
             agent {
                 docker { 
                     image 'vulkan-cts-runner'
+                    args '-v vulkan-cts-build:/build'
                 }
             }
             steps {
                 sh '''
                 cd /build
-                rm -rf VK-GL-CTS || true
-                git clone https://github.com/pingpongcat/VK-GL-CTS.git
+                # DEBUG
+                # rm -rf VK-GL-CTS || true
+                # git clone https://github.com/pingpongcat/VK-GL-CTS.git
                 cd VK-GL-CTS
                 python3 external/fetch_sources.py
                 mkdir -p build

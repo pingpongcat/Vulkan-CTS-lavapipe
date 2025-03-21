@@ -1,0 +1,218 @@
+Writing test log into TestResults.qpa
+dEQP Core vulkan-cts-1.4.2.0-rc0-36-g57854cfe3f6c013a2557ea0c04d844f33ebeb8bf (0x57854cfe) starting..
+  target implementation = 'Default'
+VUID-VkPhysicalDeviceProperties2-pNext-pNext(ERROR / SPEC): msgNum: -579609649 - Validation Error: [ VUID-VkPhysicalDeviceProperties2-pNext-pNext ] | MessageID = 0xdd73dbcf | vkGetPhysicalDeviceProperties2(): pProperties->pNext chain includes a structure with unknown VkStructureType (1000491001). This error is based on the Valid Usage documentation for version 304 of the Vulkan header.  It is possible that you are using a struct from a private extension or an extension that was added to a later version of the Vulkan header, in which case the use of pProperties->pNext is undefined and may not work correctly with validation enabled.
+The Vulkan spec states: Each pNext member of any structure (including this one) in the pNext chain must be either NULL or a pointer to a valid struct for extending VkPhysicalDeviceProperties2 (https://docs.vulkan.org/spec/latest/chapters/devsandqueues.html#VUID-VkPhysicalDeviceProperties2-pNext-pNext)
+VUID-VkDeviceCreateInfo-pNext-pNext(ERROR / SPEC): msgNum: -1876993556 - Validation Error: [ VUID-VkDeviceCreateInfo-pNext-pNext ] | MessageID = 0x901f59ec | vkCreateDevice(): pCreateInfo->pNext chain includes a structure with unknown VkStructureType (1000491000). This error is based on the Valid Usage documentation for version 304 of the Vulkan header.  It is possible that you are using a struct from a private extension or an extension that was added to a later version of the Vulkan header, in which case the use of pCreateInfo->pNext is undefined and may not work correctly with validation enabled.
+The Vulkan spec states: Each pNext member of any structure (including this one) in the pNext chain must be either NULL or a pointer to a valid struct for extending VkDeviceCreateInfo (https://docs.vulkan.org/spec/latest/chapters/devsandqueues.html#VUID-VkDeviceCreateInfo-pNext-pNext)
+
+Test case 'dEQP-VK.video.encode.h264.i'..
+  Pass (1 correctly encoded frames)
+
+Test case 'dEQP-VK.video.encode.h264.rc_vbr'..
+  Pass (1 correctly encoded frames)
+
+Test case 'dEQP-VK.video.encode.h264.rc_cbr'..
+  Pass (1 correctly encoded frames)
+
+Test case 'dEQP-VK.video.encode.h264.rc_disable'..
+VUID-vkCmdEncodeVideoKHR-constantQp-08269(ERROR / SPEC): msgNum: 1490997834 - Validation Error: [ VUID-vkCmdEncodeVideoKHR-constantQp-08269 ] Object 0: handle = 0x28d488f0, type = VK_OBJECT_TYPE_COMMAND_BUFFER; Object 1: handle = 0xea96810000000289, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0x58ded24a | vkCmdEncodeVideoKHR(): pEncodeInfo->pNext<VkVideoEncodeH264PictureInfoKHR>.pNaluSliceEntries[0].constantQp (28) is not zero but the currently set video encode rate control mode for VkVideoSessionKHR 0xea96810000000289[] was specified to be VK_VIDEO_ENCODE_RATE_CONTROL_MODE_DEFAULT_KHR when beginning the video coding scope.
+The Vulkan spec states: If the bound video session was created with the video codec operation VK_VIDEO_CODEC_OPERATION_ENCODE_H264_BIT_KHR and the current rate control mode is not VK_VIDEO_ENCODE_RATE_CONTROL_MODE_DISABLED_BIT_KHR, then VkVideoEncodeH264NaluSliceInfoKHR::constantQp must be zero for each element of the pNaluSliceEntries member of the VkVideoEncodeH264PictureInfoKHR structure included in the pNext chain of pEncodeInfo (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdEncodeVideoKHR-constantQp-08269)
+    Objects: 2
+        [0] 0x28d488f0, type: 6, name: NULL
+        [1] 0xea96810000000289, type: 1000023000, name: NULL
+VUID-vkCmdBeginVideoCodingKHR-pBeginInfo-08253(ERROR / SPEC): msgNum: 843526253 - Validation Error: [ VUID-vkCmdBeginVideoCodingKHR-pBeginInfo-08253 ] Object 0: handle = 0xea96810000000289, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0x3247306d | vkCmdBeginVideoCodingKHR(): No VkVideoEncodeRateControlInfoKHR structure was specified when beginning the video coding scope but the currently set video encode rate control mode for VkVideoSessionKHR 0xea96810000000289[] is VK_VIDEO_ENCODE_RATE_CONTROL_MODE_DISABLED_BIT_KHR.
+The Vulkan spec states: If pBeginInfo->videoSession was created with a video encode operation and the pNext chain of pBeginInfo does not include an instance of the VkVideoEncodeRateControlInfoKHR structure, then the rate control mode configured for pBeginInfo->videoSession at the time the command is executed on the device must be VK_VIDEO_ENCODE_RATE_CONTROL_MODE_DEFAULT_KHR (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdBeginVideoCodingKHR-pBeginInfo-08253)
+    Objects: 1
+        [0] 0xea96810000000289, type: 1000023000, name: NULL
+  Pass (2 correctly encoded frames)
+
+Test case 'dEQP-VK.video.encode.h264.quality_level'..
+  Pass (1 correctly encoded frames)
+
+Test case 'dEQP-VK.video.encode.h264.quantization_map_delta_rc_vbr'..
+  NotSupported (VK_KHR_video_encode_quantization_map is not supported at vktTestCase.cpp:1175)
+
+Test case 'dEQP-VK.video.encode.h264.quantization_map_delta_rc_cbr'..
+  NotSupported (VK_KHR_video_encode_quantization_map is not supported at vktTestCase.cpp:1175)
+
+Test case 'dEQP-VK.video.encode.h264.quantization_map_delta_rc_disable'..
+  NotSupported (VK_KHR_video_encode_quantization_map is not supported at vktTestCase.cpp:1175)
+
+Test case 'dEQP-VK.video.encode.h264.quantization_map_delta'..
+  NotSupported (VK_KHR_video_encode_quantization_map is not supported at vktTestCase.cpp:1175)
+
+Test case 'dEQP-VK.video.encode.h264.quantization_map_emphasis_cbr'..
+  NotSupported (VK_KHR_video_encode_quantization_map is not supported at vktTestCase.cpp:1175)
+
+Test case 'dEQP-VK.video.encode.h264.quantization_map_emphasis_vbr'..
+  NotSupported (VK_KHR_video_encode_quantization_map is not supported at vktTestCase.cpp:1175)
+
+Test case 'dEQP-VK.video.encode.h264.usage'..
+  Pass (1 correctly encoded frames)
+
+Test case 'dEQP-VK.video.encode.h264.i_p'..
+  Pass (2 correctly encoded frames)
+
+Test case 'dEQP-VK.video.encode.h264.i_p_not_matching_order'..
+VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239(ERROR / SPEC): msgNum: -1016226263 - Validation Error: [ VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239 ] Object 0: handle = 0xd23cbb000000061d, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0xc36d9e29 | vkCmdBeginVideoCodingKHR(): DPB slot index 0 is not active in VkVideoSessionKHR 0xd23cbb000000061d[].
+The Vulkan spec states: If the slotIndex member of any element of pBeginInfo->pReferenceSlots is not negative, then it must specify the index of a DPB slot that is in the active state in pBeginInfo->videoSession at the time the command is executed on the device (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239)
+    Objects: 1
+        [0] 0xd23cbb000000061d, type: 1000023000, name: NULL
+VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239(ERROR / SPEC): msgNum: -1016226263 - Validation Error: [ VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239 ] Object 0: handle = 0xd23cbb000000061d, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0xc36d9e29 | vkCmdBeginVideoCodingKHR(): DPB slot index 1 is not active in VkVideoSessionKHR 0xd23cbb000000061d[].
+The Vulkan spec states: If the slotIndex member of any element of pBeginInfo->pReferenceSlots is not negative, then it must specify the index of a DPB slot that is in the active state in pBeginInfo->videoSession at the time the command is executed on the device (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239)
+    Objects: 1
+        [0] 0xd23cbb000000061d, type: 1000023000, name: NULL
+VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239(ERROR / SPEC): msgNum: -1016226263 - Validation Error: [ VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239 ] Object 0: handle = 0xd23cbb000000061d, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0xc36d9e29 | vkCmdBeginVideoCodingKHR(): DPB slot index 1 is not active in VkVideoSessionKHR 0xd23cbb000000061d[].
+The Vulkan spec states: If the slotIndex member of any element of pBeginInfo->pReferenceSlots is not negative, then it must specify the index of a DPB slot that is in the active state in pBeginInfo->videoSession at the time the command is executed on the device (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239)
+    Objects: 1
+        [0] 0xd23cbb000000061d, type: 1000023000, name: NULL
+  Pass (2 correctly encoded frames)
+
+Test case 'dEQP-VK.video.encode.h264.query_with_status'..
+  Pass (2 correctly encoded frames)
+
+Test case 'dEQP-VK.video.encode.h264.inline_query'..
+  Pass (1 correctly encoded frames)
+
+Test case 'dEQP-VK.video.encode.h264.resources_without_profiles'..
+  Pass (2 correctly encoded frames)
+
+Test case 'dEQP-VK.video.encode.h264.resolution_change_dpb'..
+VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239(ERROR / SPEC): msgNum: -1016226263 - Validation Error: [ VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239 ] Object 0: handle = 0x3c33e800000009cc, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0xc36d9e29 | vkCmdBeginVideoCodingKHR(): DPB slot index 1 is not active in VkVideoSessionKHR 0x3c33e800000009cc[].
+The Vulkan spec states: If the slotIndex member of any element of pBeginInfo->pReferenceSlots is not negative, then it must specify the index of a DPB slot that is in the active state in pBeginInfo->videoSession at the time the command is executed on the device (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239)
+    Objects: 1
+        [0] 0x3c33e800000009cc, type: 1000023000, name: NULL
+VUID-VkVideoSessionParametersCreateInfoKHR-videoSessionParametersTemplate-04855(ERROR / SPEC): msgNum: 1787839018 - Validation Error: [ VUID-VkVideoSessionParametersCreateInfoKHR-videoSessionParametersTemplate-04855 ] Object 0: handle = 0x28d6f210, type = VK_OBJECT_TYPE_DEVICE; Object 1: handle = 0x8f14150000000a14, type = VK_OBJECT_TYPE_VIDEO_SESSION_PARAMETERS_KHR; Object 2: handle = 0x3c5e5c0000000abf, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0x6a90422a | vkCreateVideoSessionParametersKHR(): pCreateInfo->videoSessionParametersTemplate (VkVideoSessionParametersKHR 0x8f14150000000a14[]) was not created against the same VkVideoSessionKHR 0x3c5e5c0000000abf[].
+The Vulkan spec states: If videoSessionParametersTemplate is not VK_NULL_HANDLE, it must have been created against videoSession (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-VkVideoSessionParametersCreateInfoKHR-videoSessionParametersTemplate-04855)
+    Objects: 3
+        [0] 0x28d6f210, type: 3, name: NULL
+        [1] 0x8f14150000000a14, type: 1000023001, name: NULL
+        [2] 0x3c5e5c0000000abf, type: 1000023000, name: NULL
+  Pass (4 correctly encoded frames)
+
+Test case 'dEQP-VK.video.encode.h264.i_p_b_13'..
+VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377(ERROR / SPEC): msgNum: 1745930269 - Validation Error: [ VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377 ] Object 0: handle = 0x286a8850, type = VK_OBJECT_TYPE_COMMAND_BUFFER; Object 1: handle = 0x1cc9400000000af9, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0x6810c81d | vkCmdEncodeVideoKHR(): pEncodeInfo->pSetupReferenceSlot is NULL but the bound video session VkVideoSessionKHR 0x1cc9400000000af9[] was created with maxDpbSlot 6.
+The Vulkan spec states: pEncodeInfo->pSetupReferenceSlot must not be NULL unless the bound video session was created with VkVideoSessionCreateInfoKHR::maxDpbSlots equal to zero (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377)
+    Objects: 2
+        [0] 0x286a8850, type: 6, name: NULL
+        [1] 0x1cc9400000000af9, type: 1000023000, name: NULL
+VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377(ERROR / SPEC): msgNum: 1745930269 - Validation Error: [ VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377 ] Object 0: handle = 0x286a8850, type = VK_OBJECT_TYPE_COMMAND_BUFFER; Object 1: handle = 0x1cc9400000000af9, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0x6810c81d | vkCmdEncodeVideoKHR(): pEncodeInfo->pSetupReferenceSlot is NULL but the bound video session VkVideoSessionKHR 0x1cc9400000000af9[] was created with maxDpbSlot 6.
+The Vulkan spec states: pEncodeInfo->pSetupReferenceSlot must not be NULL unless the bound video session was created with VkVideoSessionCreateInfoKHR::maxDpbSlots equal to zero (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377)
+    Objects: 2
+        [0] 0x286a8850, type: 6, name: NULL
+        [1] 0x1cc9400000000af9, type: 1000023000, name: NULL
+VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377(ERROR / SPEC): msgNum: 1745930269 - Validation Error: [ VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377 ] Object 0: handle = 0x286a8850, type = VK_OBJECT_TYPE_COMMAND_BUFFER; Object 1: handle = 0x1cc9400000000af9, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0x6810c81d | vkCmdEncodeVideoKHR(): pEncodeInfo->pSetupReferenceSlot is NULL but the bound video session VkVideoSessionKHR 0x1cc9400000000af9[] was created with maxDpbSlot 6.
+The Vulkan spec states: pEncodeInfo->pSetupReferenceSlot must not be NULL unless the bound video session was created with VkVideoSessionCreateInfoKHR::maxDpbSlots equal to zero (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377)
+    Objects: 2
+        [0] 0x286a8850, type: 6, name: NULL
+        [1] 0x1cc9400000000af9, type: 1000023000, name: NULL
+VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377(ERROR / SPEC): msgNum: 1745930269 - Validation Error: [ VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377 ] Object 0: handle = 0x286a8850, type = VK_OBJECT_TYPE_COMMAND_BUFFER; Object 1: handle = 0x1cc9400000000af9, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0x6810c81d | vkCmdEncodeVideoKHR(): pEncodeInfo->pSetupReferenceSlot is NULL but the bound video session VkVideoSessionKHR 0x1cc9400000000af9[] was created with maxDpbSlot 6.
+The Vulkan spec states: pEncodeInfo->pSetupReferenceSlot must not be NULL unless the bound video session was created with VkVideoSessionCreateInfoKHR::maxDpbSlots equal to zero (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377)
+    Objects: 2
+        [0] 0x286a8850, type: 6, name: NULL
+        [1] 0x1cc9400000000af9, type: 1000023000, name: NULL
+VUID-vkCmdEncodeVideoKHR-pNext-08353(ERROR / SPEC): msgNum: -1146328129 - Validation Error: [ VUID-vkCmdEncodeVideoKHR-pNext-08353 ] Object 0: handle = 0x286a8850, type = VK_OBJECT_TYPE_COMMAND_BUFFER; | MessageID = 0xbbac6bbf | vkCmdEncodeVideoKHR(): pEncodeInfo->pReferenceSlots[0].slotIndex (0) does not match any of the elements of RefPicList0 or RefPicList1 in pEncodeInfo->pNext<VkVideoEncodeH264PictureInfoKHR>.pStdPictureInfo->pRefLists.
+The Vulkan spec states: If the bound video session was created with the video codec operation VK_VIDEO_CODEC_OPERATION_ENCODE_H264_BIT_KHR, the pNext chain of pEncodeInfo includes a VkVideoEncodeH264PictureInfoKHR structure, and pEncodeInfo->referenceSlotCount is greater than zero, then the slotIndex member of each element of pEncodeInfo->pReferenceSlots must equal one of the elements of the RefPicList0 or RefPicList1 array members of the StdVideoEncodeH264ReferenceListsInfo structure pointed to by VkVideoEncodeH264PictureInfoKHR::pStdPictureInfo->pRefLists (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdEncodeVideoKHR-pNext-08353)
+    Objects: 1
+        [0] 0x286a8850, type: 6, name: NULL
+VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377(ERROR / SPEC): msgNum: 1745930269 - Validation Error: [ VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377 ] Object 0: handle = 0x286a8850, type = VK_OBJECT_TYPE_COMMAND_BUFFER; Object 1: handle = 0x1cc9400000000af9, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0x6810c81d | vkCmdEncodeVideoKHR(): pEncodeInfo->pSetupReferenceSlot is NULL but the bound video session VkVideoSessionKHR 0x1cc9400000000af9[] was created with maxDpbSlot 6.
+The Vulkan spec states: pEncodeInfo->pSetupReferenceSlot must not be NULL unless the bound video session was created with VkVideoSessionCreateInfoKHR::maxDpbSlots equal to zero (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377)
+    Objects: 2
+        [0] 0x286a8850, type: 6, name: NULL
+        [1] 0x1cc9400000000af9, type: 1000023000, name: NULL
+VUID-vkCmdEncodeVideoKHR-pNext-08353(ERROR / SPEC): msgNum: -1146328129 - Validation Error: [ VUID-vkCmdEncodeVideoKHR-pNext-08353 ] Object 0: handle = 0x286a8850, type = VK_OBJECT_TYPE_COMMAND_BUFFER; | MessageID = 0xbbac6bbf | vkCmdEncodeVideoKHR(): pEncodeInfo->pReferenceSlots[0].slotIndex (0) does not match any of the elements of RefPicList0 or RefPicList1 in pEncodeInfo->pNext<VkVideoEncodeH264PictureInfoKHR>.pStdPictureInfo->pRefLists.
+The Vulkan spec states: If the bound video session was created with the video codec operation VK_VIDEO_CODEC_OPERATION_ENCODE_H264_BIT_KHR, the pNext chain of pEncodeInfo includes a VkVideoEncodeH264PictureInfoKHR structure, and pEncodeInfo->referenceSlotCount is greater than zero, then the slotIndex member of each element of pEncodeInfo->pReferenceSlots must equal one of the elements of the RefPicList0 or RefPicList1 array members of the StdVideoEncodeH264ReferenceListsInfo structure pointed to by VkVideoEncodeH264PictureInfoKHR::pStdPictureInfo->pRefLists (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdEncodeVideoKHR-pNext-08353)
+    Objects: 1
+        [0] 0x286a8850, type: 6, name: NULL
+VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377(ERROR / SPEC): msgNum: 1745930269 - Validation Error: [ VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377 ] Object 0: handle = 0x286a8850, type = VK_OBJECT_TYPE_COMMAND_BUFFER; Object 1: handle = 0x1cc9400000000af9, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0x6810c81d | vkCmdEncodeVideoKHR(): pEncodeInfo->pSetupReferenceSlot is NULL but the bound video session VkVideoSessionKHR 0x1cc9400000000af9[] was created with maxDpbSlot 6.
+The Vulkan spec states: pEncodeInfo->pSetupReferenceSlot must not be NULL unless the bound video session was created with VkVideoSessionCreateInfoKHR::maxDpbSlots equal to zero (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377)
+    Objects: 2
+        [0] 0x286a8850, type: 6, name: NULL
+        [1] 0x1cc9400000000af9, type: 1000023000, name: NULL
+VUID-vkCmdEncodeVideoKHR-pNext-08353(ERROR / SPEC): msgNum: -1146328129 - Validation Error: [ VUID-vkCmdEncodeVideoKHR-pNext-08353 ] Object 0: handle = 0x286a8850, type = VK_OBJECT_TYPE_COMMAND_BUFFER; | MessageID = 0xbbac6bbf | vkCmdEncodeVideoKHR(): pEncodeInfo->pReferenceSlots[0].slotIndex (0) does not match any of the elements of RefPicList0 or RefPicList1 in pEncodeInfo->pNext<VkVideoEncodeH264PictureInfoKHR>.pStdPictureInfo->pRefLists.
+The Vulkan spec states: If the bound video session was created with the video codec operation VK_VIDEO_CODEC_OPERATION_ENCODE_H264_BIT_KHR, the pNext chain of pEncodeInfo includes a VkVideoEncodeH264PictureInfoKHR structure, and pEncodeInfo->referenceSlotCount is greater than zero, then the slotIndex member of each element of pEncodeInfo->pReferenceSlots must equal one of the elements of the RefPicList0 or RefPicList1 array members of the StdVideoEncodeH264ReferenceListsInfo structure pointed to by VkVideoEncodeH264PictureInfoKHR::pStdPictureInfo->pRefLists (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdEncodeVideoKHR-pNext-08353)
+    Objects: 1
+        [0] 0x286a8850, type: 6, name: NULL
+VUID-vkCmdEncodeVideoKHR-pNext-08353(ERROR / SPEC): msgNum: -1146328129 - Validation Error: [ VUID-vkCmdEncodeVideoKHR-pNext-08353 ] Object 0: handle = 0x286a8850, type = VK_OBJECT_TYPE_COMMAND_BUFFER; | MessageID = 0xbbac6bbf | vkCmdEncodeVideoKHR(): pEncodeInfo->pReferenceSlots[0].slotIndex (0) does not match any of the elements of RefPicList0 or RefPicList1 in pEncodeInfo->pNext<VkVideoEncodeH264PictureInfoKHR>.pStdPictureInfo->pRefLists.
+The Vulkan spec states: If the bound video session was created with the video codec operation VK_VIDEO_CODEC_OPERATION_ENCODE_H264_BIT_KHR, the pNext chain of pEncodeInfo includes a VkVideoEncodeH264PictureInfoKHR structure, and pEncodeInfo->referenceSlotCount is greater than zero, then the slotIndex member of each element of pEncodeInfo->pReferenceSlots must equal one of the elements of the RefPicList0 or RefPicList1 array members of the StdVideoEncodeH264ReferenceListsInfo structure pointed to by VkVideoEncodeH264PictureInfoKHR::pStdPictureInfo->pRefLists (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdEncodeVideoKHR-pNext-08353)
+    Objects: 1
+        [0] 0x286a8850, type: 6, name: NULL
+VUID-vkCmdEncodeVideoKHR-pNext-08353(ERROR / SPEC): msgNum: -1146328129 - Validation Error: [ VUID-vkCmdEncodeVideoKHR-pNext-08353 ] Object 0: handle = 0x286a8850, type = VK_OBJECT_TYPE_COMMAND_BUFFER; | MessageID = 0xbbac6bbf | vkCmdEncodeVideoKHR(): pEncodeInfo->pReferenceSlots[1].slotIndex (1) does not match any of the elements of RefPicList0 or RefPicList1 in pEncodeInfo->pNext<VkVideoEncodeH264PictureInfoKHR>.pStdPictureInfo->pRefLists.
+The Vulkan spec states: If the bound video session was created with the video codec operation VK_VIDEO_CODEC_OPERATION_ENCODE_H264_BIT_KHR, the pNext chain of pEncodeInfo includes a VkVideoEncodeH264PictureInfoKHR structure, and pEncodeInfo->referenceSlotCount is greater than zero, then the slotIndex member of each element of pEncodeInfo->pReferenceSlots must equal one of the elements of the RefPicList0 or RefPicList1 array members of the StdVideoEncodeH264ReferenceListsInfo structure pointed to by VkVideoEncodeH264PictureInfoKHR::pStdPictureInfo->pRefLists (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdEncodeVideoKHR-pNext-08353)
+    Objects: 1
+        [0] 0x286a8850, type: 6, name: NULL
+VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377(ERROR / SPEC): msgNum: 1745930269 - Validation Error: [ VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377 ] Object 0: handle = 0x286a8850, type = VK_OBJECT_TYPE_COMMAND_BUFFER; Object 1: handle = 0x1cc9400000000af9, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0x6810c81d | vkCmdEncodeVideoKHR(): pEncodeInfo->pSetupReferenceSlot is NULL but the bound video session VkVideoSessionKHR 0x1cc9400000000af9[] was created with maxDpbSlot 6.
+The Vulkan spec states: pEncodeInfo->pSetupReferenceSlot must not be NULL unless the bound video session was created with VkVideoSessionCreateInfoKHR::maxDpbSlots equal to zero (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377)
+    Objects: 2
+        [0] 0x286a8850, type: 6, name: NULL
+        [1] 0x1cc9400000000af9, type: 1000023000, name: NULL
+VUID-vkCmdEncodeVideoKHR-pNext-08353(ERROR / SPEC): msgNum: -1146328129 - Validation Error: [ VUID-vkCmdEncodeVideoKHR-pNext-08353 ] Object 0: handle = 0x286a8850, type = VK_OBJECT_TYPE_COMMAND_BUFFER; | MessageID = 0xbbac6bbf | vkCmdEncodeVideoKHR(): pEncodeInfo->pReferenceSlots[0].slotIndex (1) does not match any of the elements of RefPicList0 or RefPicList1 in pEncodeInfo->pNext<VkVideoEncodeH264PictureInfoKHR>.pStdPictureInfo->pRefLists.
+The Vulkan spec states: If the bound video session was created with the video codec operation VK_VIDEO_CODEC_OPERATION_ENCODE_H264_BIT_KHR, the pNext chain of pEncodeInfo includes a VkVideoEncodeH264PictureInfoKHR structure, and pEncodeInfo->referenceSlotCount is greater than zero, then the slotIndex member of each element of pEncodeInfo->pReferenceSlots must equal one of the elements of the RefPicList0 or RefPicList1 array members of the StdVideoEncodeH264ReferenceListsInfo structure pointed to by VkVideoEncodeH264PictureInfoKHR::pStdPictureInfo->pRefLists (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdEncodeVideoKHR-pNext-08353)
+    Objects: 1
+        [0] 0x286a8850, type: 6, name: NULL
+VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377(ERROR / SPEC): msgNum: 1745930269 - Validation Error: [ VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377 ] Object 0: handle = 0x286a8850, type = VK_OBJECT_TYPE_COMMAND_BUFFER; Object 1: handle = 0x1cc9400000000af9, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0x6810c81d | vkCmdEncodeVideoKHR(): pEncodeInfo->pSetupReferenceSlot is NULL but the bound video session VkVideoSessionKHR 0x1cc9400000000af9[] was created with maxDpbSlot 6.
+The Vulkan spec states: pEncodeInfo->pSetupReferenceSlot must not be NULL unless the bound video session was created with VkVideoSessionCreateInfoKHR::maxDpbSlots equal to zero (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377)
+    Objects: 2
+        [0] 0x286a8850, type: 6, name: NULL
+        [1] 0x1cc9400000000af9, type: 1000023000, name: NULL
+VUID-vkCmdEncodeVideoKHR-pNext-08353(ERROR / SPEC): msgNum: -1146328129 - Validation Error: [ VUID-vkCmdEncodeVideoKHR-pNext-08353 ] Object 0: handle = 0x286a8850, type = VK_OBJECT_TYPE_COMMAND_BUFFER; | MessageID = 0xbbac6bbf | vkCmdEncodeVideoKHR(): pEncodeInfo->pReferenceSlots[0].slotIndex (1) does not match any of the elements of RefPicList0 or RefPicList1 in pEncodeInfo->pNext<VkVideoEncodeH264PictureInfoKHR>.pStdPictureInfo->pRefLists.
+The Vulkan spec states: If the bound video session was created with the video codec operation VK_VIDEO_CODEC_OPERATION_ENCODE_H264_BIT_KHR, the pNext chain of pEncodeInfo includes a VkVideoEncodeH264PictureInfoKHR structure, and pEncodeInfo->referenceSlotCount is greater than zero, then the slotIndex member of each element of pEncodeInfo->pReferenceSlots must equal one of the elements of the RefPicList0 or RefPicList1 array members of the StdVideoEncodeH264ReferenceListsInfo structure pointed to by VkVideoEncodeH264PictureInfoKHR::pStdPictureInfo->pRefLists (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdEncodeVideoKHR-pNext-08353)
+    Objects: 1
+        [0] 0x286a8850, type: 6, name: NULL
+VUID-vkCmdEncodeVideoKHR-pNext-08353(ERROR / SPEC): msgNum: -1146328129 - Validation Error: [ VUID-vkCmdEncodeVideoKHR-pNext-08353 ] Object 0: handle = 0x286a8850, type = VK_OBJECT_TYPE_COMMAND_BUFFER; | MessageID = 0xbbac6bbf | vkCmdEncodeVideoKHR(): pEncodeInfo->pReferenceSlots[0].slotIndex (1) does not match any of the elements of RefPicList0 or RefPicList1 in pEncodeInfo->pNext<VkVideoEncodeH264PictureInfoKHR>.pStdPictureInfo->pRefLists.
+The Vulkan spec states: If the bound video session was created with the video codec operation VK_VIDEO_CODEC_OPERATION_ENCODE_H264_BIT_KHR, the pNext chain of pEncodeInfo includes a VkVideoEncodeH264PictureInfoKHR structure, and pEncodeInfo->referenceSlotCount is greater than zero, then the slotIndex member of each element of pEncodeInfo->pReferenceSlots must equal one of the elements of the RefPicList0 or RefPicList1 array members of the StdVideoEncodeH264ReferenceListsInfo structure pointed to by VkVideoEncodeH264PictureInfoKHR::pStdPictureInfo->pRefLists (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdEncodeVideoKHR-pNext-08353)
+    Objects: 1
+        [0] 0x286a8850, type: 6, name: NULL
+VUID-vkCmdEncodeVideoKHR-pNext-08353(ERROR / SPEC): msgNum: -1146328129 - Validation Error: [ VUID-vkCmdEncodeVideoKHR-pNext-08353 ] Object 0: handle = 0x286a8850, type = VK_OBJECT_TYPE_COMMAND_BUFFER; | MessageID = 0xbbac6bbf | vkCmdEncodeVideoKHR(): pEncodeInfo->pReferenceSlots[1].slotIndex (2) does not match any of the elements of RefPicList0 or RefPicList1 in pEncodeInfo->pNext<VkVideoEncodeH264PictureInfoKHR>.pStdPictureInfo->pRefLists.
+The Vulkan spec states: If the bound video session was created with the video codec operation VK_VIDEO_CODEC_OPERATION_ENCODE_H264_BIT_KHR, the pNext chain of pEncodeInfo includes a VkVideoEncodeH264PictureInfoKHR structure, and pEncodeInfo->referenceSlotCount is greater than zero, then the slotIndex member of each element of pEncodeInfo->pReferenceSlots must equal one of the elements of the RefPicList0 or RefPicList1 array members of the StdVideoEncodeH264ReferenceListsInfo structure pointed to by VkVideoEncodeH264PictureInfoKHR::pStdPictureInfo->pRefLists (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdEncodeVideoKHR-pNext-08353)
+    Objects: 1
+        [0] 0x286a8850, type: 6, name: NULL
+VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239(ERROR / SPEC): msgNum: -1016226263 - Validation Error: [ VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239 ] Object 0: handle = 0x1cc9400000000af9, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0xc36d9e29 | vkCmdBeginVideoCodingKHR(): DPB slot index 1 is not active in VkVideoSessionKHR 0x1cc9400000000af9[].
+The Vulkan spec states: If the slotIndex member of any element of pBeginInfo->pReferenceSlots is not negative, then it must specify the index of a DPB slot that is in the active state in pBeginInfo->videoSession at the time the command is executed on the device (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239)
+    Objects: 1
+        [0] 0x1cc9400000000af9, type: 1000023000, name: NULL
+VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239(ERROR / SPEC): msgNum: -1016226263 - Validation Error: [ VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239 ] Object 0: handle = 0x1cc9400000000af9, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0xc36d9e29 | vkCmdBeginVideoCodingKHR(): DPB slot index 2 is not active in VkVideoSessionKHR 0x1cc9400000000af9[].
+The Vulkan spec states: If the slotIndex member of any element of pBeginInfo->pReferenceSlots is not negative, then it must specify the index of a DPB slot that is in the active state in pBeginInfo->videoSession at the time the command is executed on the device (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239)
+    Objects: 1
+        [0] 0x1cc9400000000af9, type: 1000023000, name: NULL
+VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239(ERROR / SPEC): msgNum: -1016226263 - Validation Error: [ VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239 ] Object 0: handle = 0x1cc9400000000af9, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0xc36d9e29 | vkCmdBeginVideoCodingKHR(): DPB slot index 3 is not active in VkVideoSessionKHR 0x1cc9400000000af9[].
+The Vulkan spec states: If the slotIndex member of any element of pBeginInfo->pReferenceSlots is not negative, then it must specify the index of a DPB slot that is in the active state in pBeginInfo->videoSession at the time the command is executed on the device (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239)
+    Objects: 1
+        [0] 0x1cc9400000000af9, type: 1000023000, name: NULL
+VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239(ERROR / SPEC): msgNum: -1016226263 - Validation Error: [ VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239 ] Object 0: handle = 0x1cc9400000000af9, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0xc36d9e29 | vkCmdBeginVideoCodingKHR(): DPB slot index 4 is not active in VkVideoSessionKHR 0x1cc9400000000af9[].
+The Vulkan spec states: If the slotIndex member of any element of pBeginInfo->pReferenceSlots is not negative, then it must specify the index of a DPB slot that is in the active state in pBeginInfo->videoSession at the time the command is executed on the device (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239)
+    Objects: 1
+        [0] 0x1cc9400000000af9, type: 1000023000, name: NULL
+VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239(ERROR / SPEC): msgNum: -1016226263 - Validation Error: [ VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239 ] Object 0: handle = 0x1cc9400000000af9, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0xc36d9e29 | vkCmdBeginVideoCodingKHR(): DPB slot index 5 is not active in VkVideoSessionKHR 0x1cc9400000000af9[].
+The Vulkan spec states: If the slotIndex member of any element of pBeginInfo->pReferenceSlots is not negative, then it must specify the index of a DPB slot that is in the active state in pBeginInfo->videoSession at the time the command is executed on the device (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239)
+    Objects: 1
+        [0] 0x1cc9400000000af9, type: 1000023000, name: NULL
+VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377(ERROR / SPEC): msgNum: 1745930269 - Validation Error: [ VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377 ] Object 0: handle = 0x286a8850, type = VK_OBJECT_TYPE_COMMAND_BUFFER; Object 1: handle = 0x1cc9400000000af9, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0x6810c81d | vkCmdEncodeVideoKHR(): pEncodeInfo->pSetupReferenceSlot is NULL but the bound video session VkVideoSessionKHR 0x1cc9400000000af9[] was created with maxDpbSlot 6.
+The Vulkan spec states: pEncodeInfo->pSetupReferenceSlot must not be NULL unless the bound video session was created with VkVideoSessionCreateInfoKHR::maxDpbSlots equal to zero (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377)
+    Objects: 2
+        [0] 0x286a8850, type: 6, name: NULL
+        [1] 0x1cc9400000000af9, type: 1000023000, name: NULL
+VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239(ERROR / SPEC): msgNum: -1016226263 - Validation Error: [ VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239 ] Object 0: handle = 0x1cc9400000000af9, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0xc36d9e29 | vkCmdBeginVideoCodingKHR(): DPB slot index 2 is not active in VkVideoSessionKHR 0x1cc9400000000af9[].
+The Vulkan spec states: If the slotIndex member of any element of pBeginInfo->pReferenceSlots is not negative, then it must specify the index of a DPB slot that is in the active state in pBeginInfo->videoSession at the time the command is executed on the device (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239)
+    Objects: 1
+        [0] 0x1cc9400000000af9, type: 1000023000, name: NULL
+VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377(ERROR / SPEC): msgNum: 1745930269 - Validation Error: [ VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377 ] Object 0: handle = 0x286a8850, type = VK_OBJECT_TYPE_COMMAND_BUFFER; Object 1: handle = 0x1cc9400000000af9, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0x6810c81d | vkCmdEncodeVideoKHR(): pEncodeInfo->pSetupReferenceSlot is NULL but the bound video session VkVideoSessionKHR 0x1cc9400000000af9[] was created with maxDpbSlot 6.
+The Vulkan spec states: pEncodeInfo->pSetupReferenceSlot must not be NULL unless the bound video session was created with VkVideoSessionCreateInfoKHR::maxDpbSlots equal to zero (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377)
+    Objects: 2
+        [0] 0x286a8850, type: 6, name: NULL
+        [1] 0x1cc9400000000af9, type: 1000023000, name: NULL
+VUID-vkCmdEncodeVideoKHR-pNext-08353(ERROR / SPEC): msgNum: -1146328129 - Validation Error: [ VUID-vkCmdEncodeVideoKHR-pNext-08353 ] Object 0: handle = 0x286a8850, type = VK_OBJECT_TYPE_COMMAND_BUFFER; | MessageID = 0xbbac6bbf | vkCmdEncodeVideoKHR(): pEncodeInfo->pReferenceSlots[0].slotIndex (0) does not match any of the elements of RefPicList0 or RefPicList1 in pEncodeInfo->pNext<VkVideoEncodeH264PictureInfoKHR>.pStdPictureInfo->pRefLists.
+The Vulkan spec states: If the bound video session was created with the video codec operation VK_VIDEO_CODEC_OPERATION_ENCODE_H264_BIT_KHR, the pNext chain of pEncodeInfo includes a VkVideoEncodeH264PictureInfoKHR structure, and pEncodeInfo->referenceSlotCount is greater than zero, then the slotIndex member of each element of pEncodeInfo->pReferenceSlots must equal one of the elements of the RefPicList0 or RefPicList1 array members of the StdVideoEncodeH264ReferenceListsInfo structure pointed to by VkVideoEncodeH264PictureInfoKHR::pStdPictureInfo->pRefLists (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdEncodeVideoKHR-pNext-08353)
+    Objects: 1
+        [0] 0x286a8850, type: 6, name: NULL
+  Pass (28 correctly encoded frames)
+
+DONE!
+
+Test run totals:
+  Passed:        13/19 (68.4%)
+  Failed:        0/19 (0.0%)
+  Not supported: 6/19 (31.6%)
+  Warnings:      0/19 (0.0%)
+  Waived:        0/19 (0.0%)

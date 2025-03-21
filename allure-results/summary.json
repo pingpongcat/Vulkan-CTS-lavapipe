@@ -1,0 +1,40 @@
+{
+  "summary": {
+    "passed": 13,
+    "total": 19,
+    "failed": 0,
+    "not_supported": 6
+  },
+  "statistics": {
+    "total_tests": 19,
+    "tests_with_errors": 4,
+    "total_errors": 33,
+    "error_types": 6
+  },
+  "error_counts": [
+    {
+      "id": "VUID-vkCmdEncodeVideoKHR-constantQp-08269",
+      "count": 1
+    },
+    {
+      "id": "VUID-vkCmdBeginVideoCodingKHR-pBeginInfo-08253",
+      "count": 1
+    },
+    {
+      "id": "VUID-vkCmdBeginVideoCodingKHR-slotIndex-07239",
+      "count": 10
+    },
+    {
+      "id": "VUID-VkVideoSessionParametersCreateInfoKHR-videoSessionParametersTemplate-04855",
+      "count": 1
+    },
+    {
+      "id": "VUID-vkCmdEncodeVideoKHR-pEncodeInfo-08377",
+      "count": 10
+    },
+    {
+      "id": "VUID-vkCmdEncodeVideoKHR-pNext-08353",
+      "count": 10
+    }
+  ]
+}

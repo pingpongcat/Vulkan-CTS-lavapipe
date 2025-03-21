@@ -1,0 +1,25 @@
+{
+  "uuid": "09cb3f72-3029-4eaa-9fad-4cae2688c142",
+  "name": "dEQP-VK.video.encode.h264.resources_without_profiles",
+  "status": "passed",
+  "stage": "finished",
+  "steps": [],
+  "attachments": [],
+  "parameters": [],
+  "start": 1000000,
+  "stop": 1000001,
+  "labels": [
+    {
+      "name": "suite",
+      "value": "VulkanCTS"
+    },
+    {
+      "name": "framework",
+      "value": "Vulkan CTS"
+    },
+    {
+      "name": "testClass",
+      "value": "dEQP-VK"
+    }
+  ]
+}

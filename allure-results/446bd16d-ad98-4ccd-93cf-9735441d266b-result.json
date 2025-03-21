@@ -1,0 +1,67 @@
+{
+  "uuid": "446bd16d-ad98-4ccd-93cf-9735441d266b",
+  "name": "dEQP-VK.video.encode.h264.rc_disable",
+  "status": "passed",
+  "stage": "finished",
+  "steps": [
+    {
+      "name": "Validation Error: VUID-vkCmdBeginVideoCodingKHR-pBeginInfo-08253",
+      "status": "failed",
+      "stage": "finished",
+      "steps": [],
+      "attachments": [],
+      "parameters": [
+        {
+          "name": "count",
+          "value": "1"
+        },
+        {
+          "name": "message",
+          "value": "The Vulkan spec states: If pBeginInfo->videoSession was created with a video encode operation and the pNext chain of pBeginInfo does not include an instance of the VkVideoEncodeRateControlInfoKHR structure, then the rate control mode configured for pBeginInfo->videoSession at the time the command is executed on the device must be VK_VIDEO_ENCODE_RATE_CONTROL_MODE_DEFAULT_KHR (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdBeginVideoCodingKHR-pBeginInfo-08253)\n    Objects: 1\n        [0] 0xea96810000000289, type: 1000023000, name: NULL\n  Pass (2 correctly encoded frames)"
+        }
+      ]
+    },
+    {
+      "name": "Validation Error: VUID-vkCmdEncodeVideoKHR-constantQp-08269",
+      "status": "failed",
+      "stage": "finished",
+      "steps": [],
+      "attachments": [],
+      "parameters": [
+        {
+          "name": "count",
+          "value": "1"
+        },
+        {
+          "name": "message",
+          "value": "The Vulkan spec states: If the bound video session was created with the video codec operation VK_VIDEO_CODEC_OPERATION_ENCODE_H264_BIT_KHR and the current rate control mode is not VK_VIDEO_ENCODE_RATE_CONTROL_MODE_DISABLED_BIT_KHR, then VkVideoEncodeH264NaluSliceInfoKHR::constantQp must be zero for each element of the pNaluSliceEntries member of the VkVideoEncodeH264PictureInfoKHR structure included in the pNext chain of pEncodeInfo (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdEncodeVideoKHR-constantQp-08269)\n    Objects: 2\n        [0] 0x28d488f0, type: 6, name: NULL\n        [1] 0xea96810000000289, type: 1000023000, name: NULL\nVUID-vkCmdBeginVideoCodingKHR-pBeginInfo-08253(ERROR / SPEC): msgNum: 843526253 - Validation Error: [ VUID-vkCmdBeginVideoCodingKHR-pBeginInfo-08253 ] Object 0: handle = 0xea96810000000289, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0x3247306d | vkCmdBeginVideoCodingKHR(): No VkVideoEncodeRateControlInfoKHR structure was specified when beginning the video coding scope but the currently set video encode rate control mode for VkVideoSessionKHR 0xea96810000000289[] is VK_VIDEO_ENCODE_RATE_CONTROL_MODE_DISABLED_BIT_KHR.\nThe Vulkan spec states: If pBeginInfo->videoSession was created with a video encode operation and the pNext chain of pBeginInfo does not include an instance of the VkVideoEncodeRateControlInfoKHR structure, then the rate control mode configured for pBeginInfo->videoSession at the time the command is executed on the device must be VK_VIDEO_ENCODE_RATE_CONTROL_MODE_DEFAULT_KHR (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdBeginVideoCodingKHR-pBeginInfo-08253)\n    Objects: 1\n        [0] 0xea96810000000289, type: 1000023000, name: NULL\n  Pass (2 correctly encoded frames)"
+        }
+      ]
+    }
+  ],
+  "attachments": [],
+  "parameters": [],
+  "start": 1000000,
+  "stop": 1000001,
+  "labels": [
+    {
+      "name": "suite",
+      "value": "VulkanCTS"
+    },
+    {
+      "name": "framework",
+      "value": "Vulkan CTS"
+    },
+    {
+      "name": "testClass",
+      "value": "dEQP-VK"
+    }
+  ],
+  "statusDetails": {
+    "known": false,
+    "muted": false,
+    "flaky": false,
+    "message": "Test contains 2 validation errors",
+    "trace": "VUID-vkCmdBeginVideoCodingKHR-pBeginInfo-08253 (occurred 1 times): The Vulkan spec states: If pBeginInfo->videoSession was created with a video encode operation and the pNext chain of pBeginInfo does not include an instance of the VkVideoEncodeRateControlInfoKHR structure, then the rate control mode configured for pBeginInfo->videoSession at the time the command is executed on the device must be VK_VIDEO_ENCODE_RATE_CONTROL_MODE_DEFAULT_KHR (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdBeginVideoCodingKHR-pBeginInfo-08253)\n    Objects: 1\n        [0] 0xea96810000000289, type: 1000023000, name: NULL\n  Pass (2 correctly encoded frames)\nVUID-vkCmdEncodeVideoKHR-constantQp-08269 (occurred 1 times): The Vulkan spec states: If the bound video session was created with the video codec operation VK_VIDEO_CODEC_OPERATION_ENCODE_H264_BIT_KHR and the current rate control mode is not VK_VIDEO_ENCODE_RATE_CONTROL_MODE_DISABLED_BIT_KHR, then VkVideoEncodeH264NaluSliceInfoKHR::constantQp must be zero for each element of the pNaluSliceEntries member of the VkVideoEncodeH264PictureInfoKHR structure included in the pNext chain of pEncodeInfo (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdEncodeVideoKHR-constantQp-08269)\n    Objects: 2\n        [0] 0x28d488f0, type: 6, name: NULL\n        [1] 0xea96810000000289, type: 1000023000, name: NULL\nVUID-vkCmdBeginVideoCodingKHR-pBeginInfo-08253(ERROR / SPEC): msgNum: 843526253 - Validation Error: [ VUID-vkCmdBeginVideoCodingKHR-pBeginInfo-08253 ] Object 0: handle = 0xea96810000000289, type = VK_OBJECT_TYPE_VIDEO_SESSION_KHR; | MessageID = 0x3247306d | vkCmdBeginVideoCodingKHR(): No VkVideoEncodeRateControlInfoKHR structure was specified when beginning the video coding scope but the currently set video encode rate control mode for VkVideoSessionKHR 0xea96810000000289[] is VK_VIDEO_ENCODE_RATE_CONTROL_MODE_DISABLED_BIT_KHR.\nThe Vulkan spec states: If pBeginInfo->videoSession was created with a video encode operation and the pNext chain of pBeginInfo does not include an instance of the VkVideoEncodeRateControlInfoKHR structure, then the rate control mode configured for pBeginInfo->videoSession at the time the command is executed on the device must be VK_VIDEO_ENCODE_RATE_CONTROL_MODE_DEFAULT_KHR (https://docs.vulkan.org/spec/latest/chapters/videocoding.html#VUID-vkCmdBeginVideoCodingKHR-pBeginInfo-08253)\n    Objects: 1\n        [0] 0xea96810000000289, type: 1000023000, name: NULL\n  Pass (2 correctly encoded frames)"
+  }
+}
